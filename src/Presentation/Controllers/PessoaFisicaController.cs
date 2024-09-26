@@ -20,13 +20,26 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] PessoaFisicaDTO pessoaFisica)
         {
-            if (pessoaFisica == null)
+            try
             {
-                return BadRequest("Pessoa Física não pode ser nula.");
+                if (pessoaFisica == null)
+                {
+                    return BadRequest("Pessoa Física não pode ser nula.");
+                }
+
+                await _pessoaFisicaService.AddAsync(pessoaFisica);
+                return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf }, pessoaFisica);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Outra captura genérica para erros inesperados
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
 
-            await _pessoaFisicaService.AddAsync(pessoaFisica);
-            return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf }, pessoaFisica);
         }
 
         // Método para atualizar uma pessoa física

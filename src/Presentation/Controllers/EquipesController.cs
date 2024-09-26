@@ -1,6 +1,5 @@
 ﻿using CadastroEquipes.src.Application.Interfaces.Equipes;
 using CadastroEquipes.src.Domain.Entities.Equipes;
-using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroEquipes.src.Presentation.Controllers
@@ -17,19 +16,30 @@ namespace CadastroEquipes.src.Presentation.Controllers
             _equipesService = equipesService;
         }
 
-               
 
-        // Endpoint para adicionar uma nova equipe
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] EquipeDTO equipe)
         {
-            if (equipe == null)
+            try
             {
-                return BadRequest("Equipe não pode ser nula.");
+                if (equipe == null)
+                {
+                    return BadRequest("Equipe não pode ser nula.");
+                }
+
+                await _equipesService.AddAsync(equipe);
+                return CreatedAtAction(nameof(GetById), new { id = equipe.Id }, equipe);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Outra captura genérica para erros inesperados
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
 
-            await _equipesService.AddAsync(equipe);
-            return CreatedAtAction(nameof(GetById), new { id = equipe.Id }, equipe);
         }
 
 

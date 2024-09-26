@@ -1,6 +1,7 @@
 ﻿using CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica;
 using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
+using CadastroEquipes.src.Application.Comum;
 
 namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
 {
@@ -43,6 +44,26 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
 
         public async Task AddAsync(PessoaFisicaDTO pessoaFisica)
         {
+            var pessoaExistente = await _pessoaFisicaRepository.GetByIdAsync(pessoaFisica.Cpf);
+
+            // Verifica se já existe uma pessoa com o mesmo CPF
+            if (pessoaExistente != null)
+            {
+                throw new ArgumentException("Já existe uma pessoa cadastrada com este CPF.");
+            }
+
+            // Validação do valor do Sexo
+            if (pessoaFisica.Sexo != "M" && pessoaFisica.Sexo != "F")
+            {
+                throw new ArgumentException("O valor do sexo deve ser 'M', 'F' ");
+            }
+
+            // Validação do CPF
+            if (!CpfValidator.ValidarCpf(pessoaFisica.Cpf))
+            {
+                throw new ArgumentException("CPF Inválido.");
+            }
+
             var entity = new PessoaFisicaDTO // Mudou para a entidade
             {
                 Nome = pessoaFisica.Nome,
@@ -81,8 +102,6 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
             await _pessoaFisicaRepository.DeleteAsync(cpf); // Executa a exclusão
             return true; // Retorna true se a exclusão foi bem-sucedida
         }
-        
-
 
     }
 }

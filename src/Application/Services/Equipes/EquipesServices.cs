@@ -45,6 +45,21 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
         public async Task AddAsync(EquipeDTO equipe)
         {
+
+            var equipesExistentes = await _equipeRepository.GetAllAsync();
+
+            // Verifica se já existe uma equipe com o mesmo nome
+            if (equipesExistentes.Any(e => e.Nm_Equipe.Equals(equipe.Nm_Equipe, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new ArgumentException("Já existe uma equipe cadastrada com este nome.");
+            }
+
+            // Validação do valor do Sexo
+            if (equipe.Sexo != "M" && equipe.Sexo != "F"  && equipe.Sexo != "A")
+            {
+                throw new ArgumentException("O valor do sexo deve ser 'M', 'F' ou 'A (Ambos)' ");
+            }
+
             var entity = new EquipeDTO
             {
                 Id= Guid.NewGuid(),
@@ -55,7 +70,9 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
             await _equipeRepository.AddAsync(entity);
         }
-       
+
+
+
 
         public async Task<bool> UpdateAsync(EquipeDTO equipeDTO)
         {
@@ -82,8 +99,6 @@ namespace CadastroEquipes.src.Application.Services.Equipe
             await _equipeRepository.DeleteAsync(id); // Executa a exclusão
             return true; // Retorna true se a exclusão foi bem-sucedida
         }
-
-
 
     }
 }
