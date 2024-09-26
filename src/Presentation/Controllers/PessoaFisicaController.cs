@@ -90,6 +90,5 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
             return NoContent();
         }
 
-
     }
 }

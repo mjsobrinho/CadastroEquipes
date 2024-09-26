@@ -41,10 +41,10 @@ namespace CadastroEquipes.src.Infrastructure.Repository.Equipes
 
         public async Task DeleteAsync(Guid id)
         {
-            var equipe = await _context.PessoasFisicas.FindAsync(id);
+            var equipe = await _context.Equipes.FindAsync(id);
             if (equipe != null)
             {
-                _context.PessoasFisicas.Remove(equipe);
+                _context.Equipes.Remove(equipe);
                 await _context.SaveChangesAsync();
             }
         }

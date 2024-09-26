@@ -1,5 +1,6 @@
 ﻿using CadastroEquipes.src.Application.Interfaces.Equipes;
 using CadastroEquipes.src.Domain.Entities.Equipes;
+using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CadastroEquipes.src.Presentation.Controllers
@@ -28,12 +29,30 @@ namespace CadastroEquipes.src.Presentation.Controllers
             }
 
             await _equipesService.AddAsync(equipe);
-            return CreatedAtAction(nameof(GetById), new { cpf = equipe.Id }, equipe);
+            return CreatedAtAction(nameof(GetById), new { id = equipe.Id }, equipe);
         }
 
 
+        // Método para atualizar uma pessoa física
+        [HttpPut]
+        public async Task<IActionResult> Update([FromBody] EquipeDTO equipe)
+        {
+            if (equipe == null)
+            {
+                return BadRequest("Equipe não pode ser nula.");
+            }
+
+            var resultado = await _equipesService.UpdateAsync(equipe);
+            if (!resultado)
+            {
+                return NotFound($"Equipe não atualizada {equipe.Id} não atualizado.");
+            }
+
+            return NoContent(); // Retorna 204 No Content ao atualizar com sucesso
+        }
+
         // Método para obter por CPF
-        [HttpGet("{cpf}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
             var equipe = await _equipesService.GetByIdAsync(id);
@@ -43,6 +62,37 @@ namespace CadastroEquipes.src.Presentation.Controllers
             }
 
             return Ok(equipe);
+        }
+
+        //Retorna todos as pessoas cadastradas
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            var equipe = await _equipesService.GetAllAsync();
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(equipe);
+        }
+
+
+        // Método para deletar por CPF
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            // Chama o serviço para tentar excluir a pessoa física
+            var resultado = await _equipesService.DeleteAsync(id);
+
+            // Verifica se a pessoa física foi encontrada e excluída
+            if (!resultado)
+            {
+                return NotFound($"Equipe com {id} não encontrada.");
+            }
+
+            // Retorna uma resposta 204 No Content ao excluir com sucesso
+            return NoContent();
         }
 
     }

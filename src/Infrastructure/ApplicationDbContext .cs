@@ -11,7 +11,6 @@ namespace CadastroPessoaFisica.src.Infrastructure
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<PessoaFisicaDTO> PessoasFisicas { get; set; }
         public DbSet<EquipeDTO> Equipes { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
