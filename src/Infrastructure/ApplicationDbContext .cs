@@ -10,7 +10,7 @@ namespace CadastroPessoaFisica.src.Infrastructure
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
         public DbSet<PessoasDTO> PessoasFisicas { get; set; }
         public DbSet<EquipeDTO> Equipes { get; set; }
-        public DbSet<EquipePessoasDTO> EquipesPessoas { get; set; }
+        public DbSet<EquipesPessoasDTO> EquipesPessoas { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

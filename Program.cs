@@ -8,6 +8,10 @@ using CadastroEquipes.src.Application.Interfaces.Equipes;
 using CadastroEquipes.src.Application.Services.Equipe;
 using CadastroEquipes.src.Domain.Interface.Equipes;
 using CadastroEquipes.src.Infrastructure.Repository.Equipes;
+using CadastroEquipes.src.Domain.Interface.EquipesPessoas;
+using CadastroEquipes.src.Application.Interfaces.EquipesPessoas;
+using CadastroEquipes.src.Application.Services.EquipesPessoas;
+using CadastroEquipes.src.Infrastructure.Repository.EquipesPessoas;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +32,11 @@ builder.Services.AddScoped<IPessoaFisicaRepository, PessoasRepository>();
 // Registro do serviço EquipesService
 builder.Services.AddScoped<IEquipesService, EquipesServices>(); // Ajuste conforme sua implementação
 builder.Services.AddScoped<IEquipesRepository, EquipesRepository>();
+
+// Registro do serviço EquipesService
+builder.Services.AddScoped<IEquipesPessoasService, EquipesPessoasService>(); 
+builder.Services.AddScoped<IEquipesPessoasRepository, EquipesPessoasRepository>();
+
 
 var app = builder.Build();
 
