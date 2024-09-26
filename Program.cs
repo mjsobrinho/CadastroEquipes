@@ -1,10 +1,13 @@
 using CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica;
-using CadastroPessoaFisica.src.Application.Services.PessoaFisica; // Ajuste conforme o namespace correto
+using CadastroPessoaFisica.src.Application.Services.PessoaFisica; 
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
 using CadastroPessoaFisica.src.Infrastructure.Repository.PessoaFisica;
 using CadastroPessoaFisica.src.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using CadastroEquipes.src.Application.Interfaces.Equipes;
+using CadastroEquipes.src.Application.Services.Equipe;
+using CadastroEquipes.src.Domain.Interface.Equipes;
+using CadastroEquipes.src.Infrastructure.Repository.Equipes;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +19,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 // Registro do serviço IPessoaFisicaService
-builder.Services.AddScoped<IPessoaFisicaService, PessoaFisicaService>(); // Ajuste conforme sua implementação
-builder.Services.AddScoped<IPessoaFisicaRepository, PessoaFisicaRepository>(); // Ajuste conforme sua implementação
+builder.Services.AddScoped<IPessoaFisicaService, PessoaFisicaService>(); 
+builder.Services.AddScoped<IPessoaFisicaRepository, PessoaFisicaRepository>();
+
+// Registro do serviço EquipesService
+builder.Services.AddScoped<IEquipesService, EquipesServices>(); // Ajuste conforme sua implementação
+builder.Services.AddScoped<IEquipesRepository, EquipesRepository>();
 
 var app = builder.Build();
 

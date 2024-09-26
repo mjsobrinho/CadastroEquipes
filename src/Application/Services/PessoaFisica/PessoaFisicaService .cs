@@ -81,6 +81,7 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
             await _pessoaFisicaRepository.DeleteAsync(cpf); // Executa a exclusão
             return true; // Retorna true se a exclusão foi bem-sucedida
         }
+        
 
 
     }
