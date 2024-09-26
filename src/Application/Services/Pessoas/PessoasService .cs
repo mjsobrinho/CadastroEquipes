@@ -5,21 +5,21 @@ using CadastroEquipes.src.Application.Comum;
 
 namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
 {
-    public class PessoaFisicaService:IPessoaFisicaService
+    public class PessoasService:IPessoasService
     {
         private readonly IPessoaFisicaRepository _pessoaFisicaRepository;
 
-        public PessoaFisicaService(IPessoaFisicaRepository pessoaFisicaRepository)
+        public PessoasService(IPessoaFisicaRepository pessoaFisicaRepository)
         {
             _pessoaFisicaRepository = pessoaFisicaRepository;
         }
 
 
-        public async Task<IEnumerable<PessoaFisicaDTO>> GetAllAsync()
+        public async Task<IEnumerable<PessoasDTO>> GetAllAsync()
         {
             var pessoasFisicas = await _pessoaFisicaRepository.GetAllAsync();
 
-            return pessoasFisicas.Select(p => new PessoaFisicaDTO
+            return pessoasFisicas.Select(p => new PessoasDTO
             {
                 Nome = p.Nome,
                 Dt_Nasc = p.Dt_Nasc,
@@ -28,12 +28,12 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
             }).ToList();
         }
 
-        public async Task<PessoaFisicaDTO> GetByIdAsync(string cpf)
+        public async Task<PessoasDTO> GetByIdAsync(string cpf)
         {
             var pessoaFisica = await _pessoaFisicaRepository.GetByIdAsync(cpf);
             if (pessoaFisica == null) return null;
 
-            return new PessoaFisicaDTO
+            return new PessoasDTO
             {
                 Nome = pessoaFisica.Nome,
                 Dt_Nasc = pessoaFisica.Dt_Nasc,
@@ -42,7 +42,7 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
             };
         }
 
-        public async Task AddAsync(PessoaFisicaDTO pessoaFisica)
+        public async Task AddAsync(PessoasDTO pessoaFisica)
         {
             var pessoaExistente = await _pessoaFisicaRepository.GetByIdAsync(pessoaFisica.Cpf);
 
@@ -64,7 +64,7 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
                 throw new ArgumentException("CPF Inválido.");
             }
 
-            var entity = new PessoaFisicaDTO // Mudou para a entidade
+            var entity = new PessoasDTO // Mudou para a entidade
             {
                 Nome = pessoaFisica.Nome,
                 Dt_Nasc = pessoaFisica.Dt_Nasc,
@@ -76,7 +76,7 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
         }
 
 
-        public async Task<bool> UpdateAsync(PessoaFisicaDTO pessoaFisicaDto)
+        public async Task<bool> UpdateAsync(PessoasDTO pessoaFisicaDto)
         {
             var pessoaFisica = await _pessoaFisicaRepository.GetByIdAsync(pessoaFisicaDto.Cpf);
             if (pessoaFisica == null) return false;

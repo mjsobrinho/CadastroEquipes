@@ -7,18 +7,18 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class PessoaFisicaController : ControllerBase
+    public class PessoasController : ControllerBase
     {
-        private readonly IPessoaFisicaService _pessoaFisicaService;
+        private readonly IPessoasService _pessoaFisicaService;
 
-        public PessoaFisicaController(IPessoaFisicaService pessoaFisicaService)
+        public PessoasController(IPessoasService pessoaFisicaService)
         {
             _pessoaFisicaService = pessoaFisicaService;
         }
 
         // Endpoint para adicionar uma nova pessoa física
         [HttpPost]
-        public async Task<IActionResult> Add([FromBody] PessoaFisicaDTO pessoaFisica)
+        public async Task<IActionResult> Add([FromBody] PessoasDTO pessoaFisica)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
 
         // Método para atualizar uma pessoa física
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] PessoaFisicaDTO pessoaFisica)
+        public async Task<IActionResult> Update([FromBody] PessoasDTO pessoaFisica)
         {
             if (pessoaFisica == null)
             {

@@ -4,34 +4,34 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CadastroPessoaFisica.src.Infrastructure.Repository.PessoaFisica
 {
-    public class PessoaFisicaRepository: IPessoaFisicaRepository
+    public class PessoasRepository: IPessoaFisicaRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public PessoaFisicaRepository(ApplicationDbContext context)
+        public PessoasRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
 
-        public async Task<IEnumerable<PessoaFisicaDTO>> GetAllAsync()
+        public async Task<IEnumerable<PessoasDTO>> GetAllAsync()
         {
             return await _context.PessoasFisicas.ToListAsync(); 
         }
 
 
-        public async Task<PessoaFisicaDTO> GetByIdAsync(string cpf)
+        public async Task<PessoasDTO> GetByIdAsync(string cpf)
         {
             return await _context.PessoasFisicas.FindAsync(cpf);
         }
 
-        public async Task AddAsync(PessoaFisicaDTO pessoaFisica)
+        public async Task AddAsync(PessoasDTO pessoaFisica)
         {
             await _context.PessoasFisicas.AddAsync(pessoaFisica);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(PessoaFisicaDTO pessoaFisica)
+        public async Task UpdateAsync(PessoasDTO pessoaFisica)
         {
             _context.PessoasFisicas.Update(pessoaFisica);
             await _context.SaveChangesAsync();

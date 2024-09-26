@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CadastroPessoaFisica.src.Domain.Entities.PessoaFisica
 {
     [Table("tb_pessoa")]
-    public class PessoaFisicaDTO
+    public class PessoasDTO
     {
         [Key] // Chave primária
         public string Cpf { get; set; }  // CPF da pessoa
@@ -18,10 +18,10 @@ namespace CadastroPessoaFisica.src.Domain.Entities.PessoaFisica
         public string Sexo { get; set; }  // Atributo Sexo como enum
 
         // Construtor vazio para o Entity Framework
-        public PessoaFisicaDTO() { }
+        public PessoasDTO() { }
 
         // Construtor opcional com parâmetros
-        public PessoaFisicaDTO(string nome, string cpf, DateTime dt_nasc, string sexo)
+        public PessoasDTO(string nome, string cpf, DateTime dt_nasc, string sexo)
         {
             Nome = nome;
             Cpf = cpf;

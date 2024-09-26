@@ -22,8 +22,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 // Registro do serviço IPessoaFisicaService
-builder.Services.AddScoped<IPessoaFisicaService, PessoaFisicaService>(); 
-builder.Services.AddScoped<IPessoaFisicaRepository, PessoaFisicaRepository>();
+builder.Services.AddScoped<IPessoasService, PessoasService>(); 
+builder.Services.AddScoped<IPessoaFisicaRepository, PessoasRepository>();
 
 // Registro do serviço EquipesService
 builder.Services.AddScoped<IEquipesService, EquipesServices>(); // Ajuste conforme sua implementação
