@@ -47,18 +47,28 @@ namespace CadastroEquipes.src.Presentation.Controllers
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] EquipeDTO equipe)
         {
-            if (equipe == null)
+
+            try
             {
-                return BadRequest("Equipe não pode ser nula.");
+                var resultado = await _equipesService.UpdateAsync(equipe);
+                if (!resultado)
+                {
+                    return NotFound($"Equipe não atualizada {equipe.Id} não atualizado.");
+                }
+
+                return NoContent(); // Retorna 204 No Content ao atualizar com sucesso
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Outra captura genérica para erros inesperados
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
 
-            var resultado = await _equipesService.UpdateAsync(equipe);
-            if (!resultado)
-            {
-                return NotFound($"Equipe não atualizada {equipe.Id} não atualizado.");
-            }
 
-            return NoContent(); // Retorna 204 No Content ao atualizar com sucesso
         }
 
         // Método para obter por CPF
