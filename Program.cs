@@ -1,7 +1,7 @@
-using CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica;
+using CadastroPessoaFisica.src.Application.Interfaces.Pessoas;
 using CadastroPessoaFisica.src.Application.Services.PessoaFisica; 
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
-using CadastroPessoaFisica.src.Infrastructure.Repository.PessoaFisica;
+using CadastroPessoaFisica.src.Infrastructure.Repository.Pessoas;
 using CadastroPessoaFisica.src.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using CadastroEquipes.src.Application.Interfaces.Equipes;

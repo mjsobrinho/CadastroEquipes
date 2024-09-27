@@ -1,6 +1,6 @@
 ﻿using CadastroEquipes.src.Domain.Entities.Equipes;
 using CadastroEquipes.src.Domain.Entities.EquipesPessoas;
-using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 using Microsoft.EntityFrameworkCore;
 
 namespace CadastroPessoaFisica.src.Infrastructure

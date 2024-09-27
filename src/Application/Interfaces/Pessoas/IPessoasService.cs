@@ -1,6 +1,6 @@
-﻿using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+﻿using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 
-namespace CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica
+namespace CadastroPessoaFisica.src.Application.Interfaces.Pessoas
 {
     public interface IPessoasService
     {

@@ -1,5 +1,5 @@
-﻿using CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica;
-using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+﻿using CadastroPessoaFisica.src.Application.Interfaces.Pessoas;
+using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -40,6 +40,39 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
                 return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
 
+        }
+
+
+        // Método para deletar por CPF
+        [HttpDelete("{cpf}")]
+        public async Task<IActionResult> Delete(string cpf)
+        {
+            try
+            {
+
+                // Chama o serviço para tentar excluir a pessoa física
+                var resultado = await _pessoaFisicaService.DeleteAsync(cpf);
+
+                // Verifica se a pessoa física foi encontrada e excluída
+                if (!resultado)
+                {
+                    return NotFound($"Pessoa Física com CPF {cpf} não encontrada.");
+                }
+                
+                return NoContent();
+
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Outra captura genérica para erros inesperados
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
+            }
+
+          
         }
 
         // Método para atualizar uma pessoa física
@@ -86,22 +119,6 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
             return Ok(pessoaFisica);
         }
 
-        // Método para deletar por CPF
-        [HttpDelete("{cpf}")]
-        public async Task<IActionResult> Delete(string cpf)
-        {
-            // Chama o serviço para tentar excluir a pessoa física
-            var resultado = await _pessoaFisicaService.DeleteAsync(cpf);
-
-            // Verifica se a pessoa física foi encontrada e excluída
-            if (!resultado)
-            {
-                return NotFound($"Pessoa Física com CPF {cpf} não encontrada.");
-            }
-
-            // Retorna uma resposta 204 No Content ao excluir com sucesso
-            return NoContent();
-        }
 
     }
 }

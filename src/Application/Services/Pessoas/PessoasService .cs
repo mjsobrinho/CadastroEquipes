@@ -1,7 +1,8 @@
-﻿using CadastroPessoaFisica.src.Application.Interfaces.PessoaFisica;
-using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+﻿using CadastroPessoaFisica.src.Application.Interfaces.Pessoas;
+using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
 using CadastroEquipes.src.Application.Comum;
+using System.Data.SqlClient;
 
 namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
 {
@@ -93,14 +94,45 @@ namespace CadastroPessoaFisica.src.Application.Services.PessoaFisica
 
         public async Task<bool> DeleteAsync(string cpf)
         {
-            var pessoaFisica = await _pessoaFisicaRepository.GetByIdAsync(cpf);
-            if (pessoaFisica == null)
+            try
             {
-                return false; // Retorna false se a pessoa física não for encontrada
+
+                var pessoaFisica = await _pessoaFisicaRepository.GetByIdAsync(cpf);
+                if (pessoaFisica == null)
+                {
+                    return false; // Retorna false se a pessoa física não for encontrada
+                }
+
+                await _pessoaFisicaRepository.DeleteAsync(cpf); // Executa a exclusão
+                return true; // Retorna true se a exclusão foi bem-sucedida
+            }
+            catch (Exception e)
+            {
+                string errorMessage = e.Message;
+                string errorCode = "";
+
+                if (e.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx)
+                {
+                    errorCode = sqlEx.Number.ToString(); // Obtém o código de erro SQL
+
+                    if (errorCode == "547") {
+                        errorMessage = "Pessoa já cadastrada em equipe, não permitida exclusão";
+                    }
+                   
+                }
+
+                else {
+                    errorMessage = e.InnerException.Message; // Mensagem da InnerException
+                }
+
+                throw new ArgumentException(errorMessage);
+
+
+                return false;
             }
 
-            await _pessoaFisicaRepository.DeleteAsync(cpf); // Executa a exclusão
-            return true; // Retorna true se a exclusão foi bem-sucedida
+
+         
         }
 
     }

@@ -1,8 +1,8 @@
-﻿using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+﻿using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
 using Microsoft.EntityFrameworkCore;
 
-namespace CadastroPessoaFisica.src.Infrastructure.Repository.PessoaFisica
+namespace CadastroPessoaFisica.src.Infrastructure.Repository.Pessoas
 {
     public class PessoasRepository: IPessoaFisicaRepository
     {

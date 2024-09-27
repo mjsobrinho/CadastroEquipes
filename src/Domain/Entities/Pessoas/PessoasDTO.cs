@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CadastroPessoaFisica.src.Domain.Entities.PessoaFisica
+namespace CadastroPessoaFisica.src.Domain.Entities.Pessoas
 {
     [Table("tb_pessoa")]
     public class PessoasDTO

@@ -1,4 +1,4 @@
-﻿using CadastroPessoaFisica.src.Domain.Entities.PessoaFisica;
+﻿using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 
 namespace CadastroPessoaFisica.src.Domain.Interface.PessoaFisica
 {
