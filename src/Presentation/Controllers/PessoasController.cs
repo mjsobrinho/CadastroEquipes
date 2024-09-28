@@ -1,7 +1,6 @@
 ﻿using CadastroPessoaFisica.src.Application.Interfaces.Pessoas;
 using CadastroPessoaFisica.src.Domain.Entities.Pessoas;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace CadastroPessoaFisica.src.Presentation.Controllers
 {
@@ -16,7 +15,7 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
             _pessoaFisicaService = pessoaFisicaService;
         }
 
-        // Endpoint para adicionar uma nova pessoa física
+        // 1. POST - Endpoint para adicionar uma nova pessoa física
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] PessoasDTO pessoaFisica)
         {
@@ -36,46 +35,37 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
             }
             catch (Exception ex)
             {
-                // Outra captura genérica para erros inesperados
                 return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
-
         }
 
-
-        // Método para deletar por CPF
-        [HttpDelete("{cpf}")]
-        public async Task<IActionResult> Delete(string cpf)
+        // 2. GET - Retorna todas as pessoas cadastradas
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
-            try
+            var pessoaFisica = await _pessoaFisicaService.GetAllAsync();
+            if (pessoaFisica == null)
             {
-
-                // Chama o serviço para tentar excluir a pessoa física
-                var resultado = await _pessoaFisicaService.DeleteAsync(cpf);
-
-                // Verifica se a pessoa física foi encontrada e excluída
-                if (!resultado)
-                {
-                    return NotFound($"Pessoa Física com CPF {cpf} não encontrada.");
-                }
-                
-                return NoContent();
-
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { Message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                // Outra captura genérica para erros inesperados
-                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
+                return NotFound();
             }
 
-          
+            return Ok(pessoaFisica);
         }
 
-        // Método para atualizar uma pessoa física
+        // 2. GET - Método para obter por CPF
+        [HttpGet("{cpf}")]
+        public async Task<IActionResult> GetById(string cpf)
+        {
+            var pessoaFisica = await _pessoaFisicaService.GetByIdAsync(cpf);
+            if (pessoaFisica == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pessoaFisica);
+        }
+
+        // 3. PUT - Método para atualizar uma pessoa física
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] PessoasDTO pessoaFisica)
         {
@@ -93,32 +83,29 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
             return NoContent(); // Retorna 204 No Content ao atualizar com sucesso
         }
 
-        // Método para obter por CPF
-        [HttpGet("{cpf}")]
-        public async Task<IActionResult> GetById(string cpf)
+        // 4. DELETE - Método para deletar por CPF
+        [HttpDelete("{cpf}")]
+        public async Task<IActionResult> Delete(string cpf)
         {
-            var pessoaFisica = await _pessoaFisicaService.GetByIdAsync(cpf);
-            if (pessoaFisica == null)
+            try
             {
-                return NotFound();
+                var resultado = await _pessoaFisicaService.DeleteAsync(cpf);
+
+                if (!resultado)
+                {
+                    return NotFound($"Pessoa Física com CPF {cpf} não encontrada.");
+                }
+
+                return NoContent();
             }
-
-            return Ok(pessoaFisica);
-        }
-
-        //Retorna todos as pessoas cadastradas
-        [HttpGet()]
-        public async Task<IActionResult> GetAll()
-        {
-            var pessoaFisica = await _pessoaFisicaService.GetAllAsync();
-            if (pessoaFisica == null)
+            catch (ArgumentException ex)
             {
-                return NotFound();
+                return BadRequest(new { Message = ex.Message });
             }
-
-            return Ok(pessoaFisica);
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
+            }
         }
-
-
     }
 }

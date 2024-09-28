@@ -42,6 +42,33 @@ namespace CadastroEquipes.src.Presentation.Controllers
 
         }
 
+        //Retorna todos as pessoas cadastradas
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            var equipe = await _equipesService.GetAllAsync();
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(equipe);
+        }
+
+        // Método para obter por CPF
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var equipe = await _equipesService.GetByIdAsync(id);
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(equipe);
+        }
+
+
 
         // Método para atualizar uma pessoa física
         [HttpPut]
@@ -68,35 +95,9 @@ namespace CadastroEquipes.src.Presentation.Controllers
                 return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
 
-
         }
 
-        // Método para obter por CPF
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(Guid id)
-        {
-            var equipe = await _equipesService.GetByIdAsync(id);
-            if (equipe == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(equipe);
-        }
-
-        //Retorna todos as pessoas cadastradas
-        [HttpGet()]
-        public async Task<IActionResult> GetAll()
-        {
-            var equipe = await _equipesService.GetAllAsync();
-            if (equipe == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(equipe);
-        }
-
+        
 
         // Método para deletar por CPF
         [HttpDelete("{id}")]

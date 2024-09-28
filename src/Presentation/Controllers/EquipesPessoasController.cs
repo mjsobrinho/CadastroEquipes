@@ -68,6 +68,31 @@ namespace CadastroEquipes.src.Presentation.Controllers
             return Ok(equipe);
         }
 
+        // 4. DELETE - Método para deletar por CPF/id_equipe
+        [HttpDelete("{id}/{cpf}")]
+        public async Task<IActionResult> Delete(Guid id, string cpf)
+        {
+            try
+            {
+                var resultado = await _equipesPessoasService.DeleteAsync(id, cpf);
+
+                if (!resultado)
+                {
+                    return NotFound($"Registro não encontrado {cpf} não encontrada.");
+                }
+
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
+            }
+        }
+
 
     }
 }

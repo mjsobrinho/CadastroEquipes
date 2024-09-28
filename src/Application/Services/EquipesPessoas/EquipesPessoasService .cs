@@ -1,6 +1,7 @@
 ﻿using CadastroEquipes.src.Application.Comum;
 using CadastroEquipes.src.Application.Interfaces.EquipesPessoas;
 using CadastroEquipes.src.Domain.Entities.EquipesPessoas;
+using CadastroEquipes.src.Domain.Interface.Equipes;
 using CadastroEquipes.src.Domain.Interface.EquipesPessoas;
 using CadastroPessoaFisica.src.Domain.Interface.PessoaFisica;
 
@@ -10,13 +11,17 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
     {
         private readonly IEquipesPessoasRepository _equipesPessoasRepository;
         private readonly IPessoaFisicaRepository _pessoaFisicaRepository;
+        private readonly IEquipesRepository _equipesRepository;
 
-
-        public EquipesPessoasService(IEquipesPessoasRepository equipesPessoasRepository,
-            IPessoaFisicaRepository pessoaFisicaRepository)
+        public EquipesPessoasService(
+            IEquipesPessoasRepository equipesPessoasRepository,
+            IEquipesRepository equipesRepository,
+            IPessoaFisicaRepository pessoaFisicaRepository
+            )
         {
             _equipesPessoasRepository = equipesPessoasRepository;
             _pessoaFisicaRepository = pessoaFisicaRepository;
+            _equipesRepository = equipesRepository;
         }
 
         public async Task<IEnumerable<EquipesPessoasRelatDTO>> GetAllAsync()
@@ -51,19 +56,6 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
 
         public async Task AddAsync(EquipesPessoasDTO equipePessoas)
         {
-            var pessoaExistente = await _equipesPessoasRepository.GetByIdAsync(equipePessoas.Id_Equipe, equipePessoas.Cpf);
-
-            // Verifica se já existe uma pessoa com o mesmo CPF
-            if (pessoaExistente != null)
-            {
-                throw new ArgumentException("Já existe uma pessoa cadastrada com este CPF.");
-            }
-
-            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf);
-
-            var dataatual = DateTime.Today;
-            var idade = dataatual.Year - pessoa.Dt_Nasc.Year;
-
 
             // Validação do CPF
             if (!CpfValidator.ValidarCpf(equipePessoas.Cpf))
@@ -71,9 +63,40 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
                 throw new ArgumentException("CPF Inválido.");
             }
 
+            var pessoaExistente = await _equipesPessoasRepository.GetByIdAsync(equipePessoas.Id_Equipe, equipePessoas.Cpf);
+
+            // Verifica se já existe uma pessoa com o mesmo CPF
+            if (pessoaExistente != null)
+            {
+                throw new ArgumentException("Pessoa já cadastrada na equipe.");
+            }
+
+            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf);
+
+            var equipe = await _equipesRepository.GetByIdAsync(equipePessoas.Id_Equipe);
+
+
+            var dataatual = DateTime.Today;
+            var idade = dataatual.Year - pessoa.Dt_Nasc.Year;
+
+            //Valida a idade pra entrar na equipe
+            if (equipe.Idad_Mini > idade)
+                throw new ArgumentException("Idade não permitida pra esta equipe.");
+
+
+            if (equipe.Sexo != "A" && equipe.Sexo != pessoa.Sexo)
+            {
+                if (pessoa.Sexo == "M")
+                     throw new ArgumentException("Equipe não aceita sexo masculino.");
+
+                if (pessoa.Sexo == "F")
+                    throw new ArgumentException("Equipe não aceita sexo feminino.");
+
+            }
+                
+
             var entity = new EquipesPessoasDTO // Mudou para a entidade
             {
-                
              Id_Equipe = equipePessoas.Id_Equipe,
              Cpf = equipePessoas.Cpf,
              idade = idade
