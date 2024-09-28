@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="src\Application\ViewModel\**" />
+    <Content Remove="src\Application\ViewModel\**" />
+    <EmbeddedResource Remove="src\Application\ViewModel\**" />
+    <None Remove="src\Application\ViewModel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />

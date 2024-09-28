@@ -19,14 +19,19 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
             _pessoaFisicaRepository = pessoaFisicaRepository;
         }
 
-        public async Task<IEnumerable<EquipesPessoasDTO>> GetAllAsync()
+        public async Task<IEnumerable<EquipesPessoasRelatDTO>> GetAllAsync()
         {
            var equipes = await _equipesPessoasRepository.GetAllAsync();
 
-            return equipes.Select(p => new EquipesPessoasDTO
+            return equipes.Select(p => new EquipesPessoasRelatDTO
             {
                 Id_Equipe = p.Id_Equipe,
-                Cpf = p.Cpf
+                Cpf = p.Cpf,
+                nome = p.nome,
+                nm_equipe = p.nm_equipe,
+                idade  = p.idade,
+                sexo = p.sexo,
+
             }).ToList();
         }
 

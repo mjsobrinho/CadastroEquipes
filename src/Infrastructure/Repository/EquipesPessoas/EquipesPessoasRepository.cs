@@ -1,11 +1,12 @@
 ﻿using CadastroEquipes.src.Domain.Entities.EquipesPessoas;
 using CadastroEquipes.src.Domain.Interface.EquipesPessoas;
 using CadastroPessoaFisica.src.Infrastructure;
+using Dapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace CadastroEquipes.src.Infrastructure.Repository.EquipesPessoas
 {
-    public class EquipesPessoasRepository: IEquipesPessoasRepository
+    public class EquipesPessoasRepository : IEquipesPessoasRepository
     {
         private readonly ApplicationDbContext _context;
         public EquipesPessoasRepository(ApplicationDbContext context)
@@ -13,9 +14,34 @@ namespace CadastroEquipes.src.Infrastructure.Repository.EquipesPessoas
             _context = context;
         }
 
-        public async Task<IEnumerable<EquipesPessoasDTO>> GetAllAsync()
+        public async Task<IEnumerable<EquipesPessoasRelatDTO>> GetAllAsync()
         {
-            return await _context.EquipesPessoas.ToListAsync();
+
+            string sqlGet = @"
+            SELECT
+                c.id AS Id_Equipe, 
+                b.cpf AS cpf,
+                b.nome AS nome,
+                c.nm_equipe AS nm_equipe,
+                b.sexo AS sexo,
+                a.idade AS idade
+            FROM
+                 tb_equipes_pessoas a (nolock)
+            INNER JOIN 
+                 tb_pessoa b (nolock) ON a.cpf = b.cpf
+            INNER JOIN 
+                tb_equipes c (nolock) ON c.id = a.id_equipe ";
+
+            using (var connection = _context.Database.GetDbConnection())
+            {
+                await connection.OpenAsync(); // Abre a conexão com o banco de dados
+
+                // Executa a consulta e retorna a lista de resultados
+                var results = await connection.QueryAsync<EquipesPessoasRelatDTO>(sqlGet);
+
+                return results; // Retorna a lista de resultados
+            }
+
         }
 
         public async Task<EquipesPessoasDTO> GetByIdAsync(Guid idEquipe, string cpf)

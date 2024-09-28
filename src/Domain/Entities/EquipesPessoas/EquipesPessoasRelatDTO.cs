@@ -4,13 +4,15 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CadastroEquipes.src.Domain.Entities.EquipesPessoas
 {
-    [PrimaryKey(nameof(Id_Equipe), nameof(Cpf))]
-    [Table("tb_equipes_pessoas")]
-    public class EquipesPessoasDTO
+    
+    public class EquipesPessoasRelatDTO
     {
         public Guid Id_Equipe { get; set; }  // Chave estrangeira para tb_equipes
-        public string Cpf { get; set; }      // Chave estrangeira para tb_pessoa
         
+        public string Cpf { get; set; }      // Chave estrangeira para tb_pessoa
+        public string nome { get; set; }
+        public string nm_equipe { get; set; }
+        public string sexo { get; set; }
         public int idade { get; set; }
     }
 }

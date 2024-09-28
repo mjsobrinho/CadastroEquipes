@@ -55,5 +55,19 @@ namespace CadastroEquipes.src.Presentation.Controllers
             return Ok(equipePessoas);
         }
 
+        //Retorna todos as pessoas cadastradas
+        [HttpGet()]
+        public async Task<IActionResult> GetAll()
+        {
+            var equipe = await _equipesPessoasService.GetAllAsync();
+            if (equipe == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(equipe);
+        }
+
+
     }
 }
