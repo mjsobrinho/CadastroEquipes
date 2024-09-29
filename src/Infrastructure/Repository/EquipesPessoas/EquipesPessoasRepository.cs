@@ -19,7 +19,7 @@ namespace CadastroEquipes.src.Infrastructure.Repository.EquipesPessoas
 
             string sqlGet = @"
             SELECT
-                c.id AS Id_Equipe, 
+                c.id_Equipe AS id_Equipe, 
                 b.cpf AS cpf,
                 b.nome AS nome,
                 c.nm_equipe AS nm_equipe,
@@ -28,9 +28,9 @@ namespace CadastroEquipes.src.Infrastructure.Repository.EquipesPessoas
             FROM
                  tb_equipes_pessoas a (nolock)
             INNER JOIN 
-                 tb_pessoa b (nolock) ON a.cpf = b.cpf
+                 tb_pessoas b (nolock) ON a.cpf = b.cpf
             INNER JOIN 
-                tb_equipes c (nolock) ON c.id = a.id_equipe ";
+                tb_equipes c (nolock) ON c.id_Equipe = a.id_Equipe ";
 
             using (var connection = _context.Database.GetDbConnection())
             {

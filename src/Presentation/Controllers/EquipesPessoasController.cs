@@ -27,7 +27,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
                 }
 
                 await _equipesPessoasService.AddAsync(equipesPessoas);
-                return CreatedAtAction(nameof(GetById), new { cpf = equipesPessoas.Cpf, IdEquipe = equipesPessoas.Id_Equipe }, equipesPessoas);
+                return CreatedAtAction(nameof(GetById), new { cpf = equipesPessoas.Cpf.Replace(".", "").Replace("-", ""), IdEquipe = equipesPessoas.Id_Equipe }, equipesPessoas);
             }
             catch (ArgumentException ex)
             {

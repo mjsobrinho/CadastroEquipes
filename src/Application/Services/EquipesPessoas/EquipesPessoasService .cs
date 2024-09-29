@@ -30,7 +30,7 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
 
             return equipes.Select(p => new EquipesPessoasRelatDTO
             {
-                Id_Equipe = p.Id_Equipe,
+                id_Equipe = p.id_Equipe,
                 Cpf = p.Cpf,
                 nome = p.nome,
                 nm_equipe = p.nm_equipe,
@@ -71,7 +71,7 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
                 throw new ArgumentException("Pessoa já cadastrada na equipe.");
             }
 
-            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf);
+            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf.Replace("-","").Replace(".",""));
 
             var equipe = await _equipesRepository.GetByIdAsync(equipePessoas.Id_Equipe);
 

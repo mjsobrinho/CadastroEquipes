@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CadastroPessoaFisica.src.Domain.Entities.Pessoas
 {
-    [Table("tb_pessoa")]
+    [Table("tb_pessoas")]
     public class PessoasDTO
     {
         [Key] // Chave primária

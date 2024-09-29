@@ -21,7 +21,7 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
             return equipes.Select(p => new EquipeDTO
             {
-                Id = p.Id,
+                id_Equipe = p.id_Equipe,
                 Nm_Equipe = p.Nm_Equipe,
                 Idad_Mini = p.Idad_Mini,
                 Sexo = p.Sexo
@@ -36,7 +36,7 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
             return new EquipeDTO
             {
-                Id =equipe.Id,
+                id_Equipe = equipe.id_Equipe,
                 Nm_Equipe = equipe.Nm_Equipe,
                 Idad_Mini = equipe.Idad_Mini,
                 Sexo = equipe.Sexo
@@ -62,7 +62,7 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
             var entity = new EquipeDTO
             {
-                Id= Guid.NewGuid(),
+                id_Equipe = Guid.NewGuid(),
                 Nm_Equipe = equipe.Nm_Equipe,
                 Idad_Mini = equipe.Idad_Mini,
                 Sexo   = equipe.Sexo
@@ -76,13 +76,13 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
         public async Task<bool> UpdateAsync(EquipeDTO equipeDTO)
         {
-            var equipe = await _equipeRepository.GetByIdAsync(equipeDTO.Id);
+            var equipe = await _equipeRepository.GetByIdAsync(equipeDTO.id_Equipe);
             if (equipe == null) return false;
 
             var equipesExistentes = await _equipeRepository.GetAllAsync();
 
             // Verifica se já existe uma equipe com o mesmo nome
-            if (equipesExistentes.Any(e => e.Nm_Equipe.Equals(equipe.Nm_Equipe, StringComparison.OrdinalIgnoreCase)))
+            if (equipesExistentes.Any(e => e.Nm_Equipe.Equals(equipeDTO.Nm_Equipe, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new ArgumentException("Já existe uma equipe cadastrada com este nome.");
             }

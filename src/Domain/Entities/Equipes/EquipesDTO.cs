@@ -8,7 +8,7 @@ namespace CadastroEquipes.src.Domain.Entities.Equipes
     public class EquipeDTO
     {
         [Key] // Chave primária
-        public Guid Id { get; set; } // Chave primária do tipo GUID
+        public Guid id_Equipe { get; set; } // Chave primária do tipo GUID
 
 
         [StringLength(100)] // Limita o tamanho do nome a 100 caracteres
@@ -21,13 +21,13 @@ namespace CadastroEquipes.src.Domain.Entities.Equipes
         // Construtor padrão
         public EquipeDTO()
         {
-            Id = Guid.NewGuid(); // Gera um novo GUID por padrão
+            id_Equipe = Guid.NewGuid(); // Gera um novo GUID por padrão
         }
 
         // Construtor adicional com parâmetros
         public EquipeDTO(string nm_equipe,  int idadeMin, string sexo)
         {
-            Id = Guid.NewGuid();
+            id_Equipe = Guid.NewGuid();
             Nm_Equipe = nm_equipe;
             Idad_Mini = idadeMin;
             Sexo = sexo;

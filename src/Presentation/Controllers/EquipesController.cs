@@ -16,6 +16,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
             _equipesService = equipesService;
         }
 
+      
 
         [HttpPost]
         public async Task<IActionResult> Add([FromBody] EquipeDTO equipe)
@@ -28,7 +29,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
                 }
 
                 await _equipesService.AddAsync(equipe);
-                return CreatedAtAction(nameof(GetById), new { id = equipe.Id }, equipe);
+                return CreatedAtAction(nameof(GetById), new { id = equipe.id_Equipe }, equipe);
             }
             catch (ArgumentException ex)
             {
@@ -41,6 +42,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
             }
 
         }
+
 
         //Retorna todos as pessoas cadastradas
         [HttpGet()]
@@ -80,7 +82,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
                 var resultado = await _equipesService.UpdateAsync(equipe);
                 if (!resultado)
                 {
-                    return NotFound($"Equipe não atualizada {equipe.Id} não atualizado.");
+                    return NotFound($"Equipe não atualizada {equipe.id_Equipe} não atualizado.");
                 }
 
                 return NoContent(); // Retorna 204 No Content ao atualizar com sucesso

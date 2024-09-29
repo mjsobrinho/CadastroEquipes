@@ -27,7 +27,7 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
                 }
 
                 await _pessoaFisicaService.AddAsync(pessoaFisica);
-                return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf }, pessoaFisica);
+                return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf.Replace(".", "").Replace("-", "") }, pessoaFisica);
             }
             catch (ArgumentException ex)
             {
@@ -56,7 +56,7 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
         [HttpGet("{cpf}")]
         public async Task<IActionResult> GetById(string cpf)
         {
-            var pessoaFisica = await _pessoaFisicaService.GetByIdAsync(cpf);
+            var pessoaFisica = await _pessoaFisicaService.GetByIdAsync(cpf.Replace(".", "").Replace("-", ""));
             if (pessoaFisica == null)
             {
                 return NotFound();
