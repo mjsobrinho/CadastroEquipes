@@ -81,12 +81,6 @@ namespace CadastroEquipes.src.Application.Services.Equipe
 
             var equipesExistentes = await _equipeRepository.GetAllAsync();
 
-            // Verifica se já existe uma equipe com o mesmo nome
-            if (equipesExistentes.Any(e => e.Nm_Equipe.Equals(equipeDTO.Nm_Equipe, StringComparison.OrdinalIgnoreCase)))
-            {
-                throw new ArgumentException("Já existe uma equipe cadastrada com este nome.");
-            }
-
             // Atualiza os campos necessários
             equipe.Nm_Equipe = equipeDTO.Nm_Equipe;
             equipe.Idad_Mini = equipeDTO.Idad_Mini;

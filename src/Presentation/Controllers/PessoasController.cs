@@ -26,8 +26,10 @@ namespace CadastroPessoaFisica.src.Presentation.Controllers
                     return BadRequest("Pessoa Física não pode ser nula.");
                 }
 
+                pessoaFisica.Cpf = pessoaFisica.Cpf.Replace(".", "").Replace("-", "");
+
                 await _pessoaFisicaService.AddAsync(pessoaFisica);
-                return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf.Replace(".", "").Replace("-", "") }, pessoaFisica);
+                return CreatedAtAction(nameof(GetById), new { cpf = pessoaFisica.Cpf}, pessoaFisica);
             }
             catch (ArgumentException ex)
             {
