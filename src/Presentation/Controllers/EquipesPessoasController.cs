@@ -26,6 +26,7 @@ namespace CadastroEquipes.src.Presentation.Controllers
                     return BadRequest("Equipe não pode ser nula.");
                 }
 
+                equipesPessoas.Cpf = equipesPessoas.Cpf.Replace(".","").Replace("-","");
                 await _equipesPessoasService.AddAsync(equipesPessoas);
                 return CreatedAtAction(nameof(GetById), new { id = equipesPessoas.Id_Equipe, cpf = equipesPessoas.Cpf }, equipesPessoas);
             }

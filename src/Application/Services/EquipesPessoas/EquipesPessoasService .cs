@@ -71,10 +71,9 @@ namespace CadastroEquipes.src.Application.Services.EquipesPessoas
                 throw new ArgumentException("Pessoa já cadastrada na equipe.");
             }
 
-            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf.Replace("-","").Replace(".",""));
+            var pessoa = await _pessoaFisicaRepository.GetByIdAsync(equipePessoas.Cpf);
 
             var equipe = await _equipesRepository.GetByIdAsync(equipePessoas.Id_Equipe);
-
 
             var dataatual = DateTime.Today;
             var idade = dataatual.Year - pessoa.Dt_Nasc.Year;
