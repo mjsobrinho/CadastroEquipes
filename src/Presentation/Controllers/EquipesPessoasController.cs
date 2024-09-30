@@ -23,11 +23,11 @@ namespace CadastroEquipes.src.Presentation.Controllers
             {
                 if (equipesPessoas == null)
                 {
-                    return BadRequest("Pessoa Física não pode ser nula.");
+                    return BadRequest("Equipe não pode ser nula.");
                 }
 
                 await _equipesPessoasService.AddAsync(equipesPessoas);
-                return CreatedAtAction(nameof(GetById), new { cpf = equipesPessoas.Cpf.Replace(".", "").Replace("-", ""), IdEquipe = equipesPessoas.Id_Equipe }, equipesPessoas);
+                return CreatedAtAction(nameof(GetById), new { id = equipesPessoas.Id_Equipe, cpf = equipesPessoas.Cpf }, equipesPessoas);
             }
             catch (ArgumentException ex)
             {
@@ -38,7 +38,6 @@ namespace CadastroEquipes.src.Presentation.Controllers
                 // Outra captura genérica para erros inesperados
                 return StatusCode(500, new { Message = "Ocorreu um erro no servidor." });
             }
-
         }
 
         // Método para obter a equipe
@@ -69,12 +68,12 @@ namespace CadastroEquipes.src.Presentation.Controllers
         }
 
         // 4. DELETE - Método para deletar por CPF/id_equipe
-        [HttpDelete("{id}/{cpf}")]
-        public async Task<IActionResult> Delete(Guid id, string cpf)
+        [HttpDelete("{Id_Equipe}/{cpf}")]
+        public async Task<IActionResult> Delete(Guid Id_Equipe, string cpf)
         {
             try
             {
-                var resultado = await _equipesPessoasService.DeleteAsync(id, cpf);
+                var resultado = await _equipesPessoasService.DeleteAsync(Id_Equipe, cpf);
 
                 if (!resultado)
                 {
